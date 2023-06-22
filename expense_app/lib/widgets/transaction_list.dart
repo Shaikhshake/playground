@@ -11,7 +11,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 500,
+      height: 100,
 
       /// THE RECOMMENDED LISTVIEW.BUILDER METHOD DOESN'T WORK!!!!!!
       /// this is error generated

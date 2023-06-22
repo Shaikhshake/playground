@@ -4,18 +4,18 @@ import '../widgets/new_transaction.dart';
 import 'package:flutter/material.dart';
 import "./models/transaction.dart";
 import './widgets/transaction_list.dart';
+import './widgets/chart.dart';
 
 void main() {
   runApp(
     MaterialApp(
-        home: ExpenseApp(),
-        title: "Expense Report",
-        theme: ThemeData(
-          primarySwatch: Colors.amber,
-          primaryIconTheme: IconThemeData(color: Colors.purple),
-          
-        ),
-        ),
+      home: ExpenseApp(),
+      title: "Expense Report",
+      theme: ThemeData(
+        primarySwatch: Colors.amber,
+        primaryIconTheme: IconThemeData(color: Colors.purple),
+      ),
+    ),
   );
   //runApp(ExpenseApp());
 }
@@ -52,6 +52,12 @@ class _ExpenseAppState extends State<ExpenseApp> {
         });
   }
 
+  List<Transaction> get _recentTransactions {
+    return transactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +72,18 @@ class _ExpenseAppState extends State<ExpenseApp> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-              //For card
-              width: double.infinity,
-              child: Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Card(
-                  color: Theme.of(context).primaryColor,
-                  elevation: 10,
-                  child: Text("Card Placeholder"),
-                ),
-              )),
+          // Container(
+          //     //For card
+          //     width: double.infinity,
+          //     child: Container(
+          //       margin: EdgeInsets.only(top: 5),
+          //       child: Card(
+          //         color: Theme.of(context).primaryColor,
+          //         elevation: 10,
+          //         child: Text("Card Placeholder"),
+          //       ),
+          //     )),
+          Chart(transactions),
           TransactionList(transactions), // for Input and Display parts
         ],
       ),
@@ -85,7 +92,6 @@ class _ExpenseAppState extends State<ExpenseApp> {
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      
     );
   }
 }

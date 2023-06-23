@@ -7,11 +7,12 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  TransactionList(this.transactions);
+  final Function deleteTransaction;
+  TransactionList(this.transactions, this.deleteTransaction);
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600,
+      height: 570,
 
       /// THE RECOMMENDED LISTVIEW.BUILDER METHOD DOESN'T WORK!!!!!!
       /// this is error generated
@@ -25,11 +26,13 @@ class TransactionList extends StatelessWidget {
       //         itemBuilder: (context, index) => {
       child: transactions.isEmpty
           ? Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Image.asset('assets/images/empty_folder.png'),
                 Text("No Transactions Added Yet!",
                     style:
                         TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                Image.asset('assets/images/rabbit.jpeg'),
+                
               ],
             )
           : ListView(
@@ -89,14 +92,24 @@ class TransactionList extends StatelessWidget {
                       radius: 30,
                       child: Padding(
                         padding: const EdgeInsets.all(6),
-                        child: FittedBox(child: Text('${tx.amount}',)),
+                        child: FittedBox(
+                            child: Text(
+                          '₹${tx.amount}',
+                        )),
                       ),
                     ),
                     title: Text(
-                      tx.title, 
-                      style: TextStyle(fontWeight:FontWeight.normal),
-                      ),
+                      tx.title,
+                      style: TextStyle(fontWeight: FontWeight.normal),
+                    ),
                     subtitle: Text(DateFormat.yMMMd().format(tx.date)),
+                    trailing: IconButton(
+                      onPressed: () {
+                        deleteTransaction(tx.id);
+                      },
+                      icon: Icon(Icons.delete),
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
                   ),
                 );
               }).toList(),

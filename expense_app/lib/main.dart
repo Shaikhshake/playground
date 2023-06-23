@@ -31,13 +31,14 @@ class _ExpenseAppState extends State<ExpenseApp> {
     // Transaction("t2", "Handbol", 899.9, DateTime.now()),
   ];
 
-  void _addNewTransaction(String txTitle, double txAmount, DateTime chosenDate) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     if (txTitle.isEmpty || txAmount.isNaN || txAmount.isNegative) {
       print("THATS ILLEGAL, CHECK USER_TRANSACTION.DART\n\n\n\n");
       return;
     }
-    final newTx = Transaction(
-        DateTime.now().toString(), txTitle, txAmount, chosenDate);
+    final newTx =
+        Transaction(DateTime.now().toString(), txTitle, txAmount, chosenDate);
 
     setState(() {
       transactions.add(newTx);
@@ -50,6 +51,12 @@ class _ExpenseAppState extends State<ExpenseApp> {
         builder: (ctx) {
           return NewTransaction(_addNewTransaction);
         });
+  }
+
+  void _deleteTransactions(String id) {
+    setState(() {
+      transactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   List<Transaction> get _recentTransactions {
@@ -84,7 +91,7 @@ class _ExpenseAppState extends State<ExpenseApp> {
           //       ),
           //     )),
           Chart(transactions),
-          TransactionList(transactions), // for Input and Display parts
+          TransactionList(transactions, _deleteTransactions), // for Input and Display parts
         ],
       ),
       floatingActionButton: FloatingActionButton(

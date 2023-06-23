@@ -46,7 +46,7 @@ class _NewTransactionState extends State<NewTransaction> {
             // i don't wanna add onSubmit option for user.
           ),
           TextField(
-            decoration: InputDecoration(labelText: "Amount"),
+            decoration: InputDecoration(labelText: "Amount: ₹"),
             controller: amountController,
             keyboardType: TextInputType.number,
           ),

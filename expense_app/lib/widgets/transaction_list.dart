@@ -11,7 +11,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 600,
 
       /// THE RECOMMENDED LISTVIEW.BUILDER METHOD DOESN'T WORK!!!!!!
       /// this is error generated
@@ -26,63 +26,79 @@ class TransactionList extends StatelessWidget {
       child: transactions.isEmpty
           ? Column(
               children: [
-                Text(
-                    "No Transactions Added Yet!",
+                Text("No Transactions Added Yet!",
                     style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)
-                    ),
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                 Image.asset('assets/images/rabbit.jpeg'),
               ],
             )
           : ListView(
               children: transactions.map((tx) {
+                // return Card(
+                //     child: Row(
+                //   children: [
+                //     Container(
+                //       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                //       // decoration: BoxDecoration(
+                //       //     border: Border.all(color: Theme.of(context).primaryColor, width: 2)),
+                //       padding: EdgeInsets.all(8.6),
+                //       child: Text(
+                //         "${tx.amount.toStringAsFixed(2)}",
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 22,
+                //             color: Color.fromARGB(255, 74, 58, 71)),
+                //       ),
+                //     ),
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Container(
+                //           // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                //           // padding: EdgeInsets.all(10),
+                //           // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+
+                //           child: Text(
+                //             tx.title,
+                //             style: TextStyle(
+                //                 color: Color.fromARGB(255, 112, 164, 232),
+                //                 fontSize: 18.4,
+                //                 fontWeight: FontWeight.w500),
+                //           ),
+                //         ),
+                //         Container(
+                //           // decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+                //           alignment: Alignment.bottomLeft,
+                //           child: Text(
+                //             DateFormat.yMMMd().format(tx.date),
+                //             style: const TextStyle(
+                //                 color: Color.fromARGB(255, 120, 157, 186),
+                //                 fontSize: 9,
+                //                 fontWeight: FontWeight.w500),
+                //           ),
+                //         )
+                //       ],
+                //     )
+                //   ],
+                // ));
                 return Card(
-                    child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      // decoration: BoxDecoration(
-                      //     border: Border.all(color: Theme.of(context).primaryColor, width: 2)),
-                      padding: EdgeInsets.all(8.6),
-                      child: Text(
-                        "${tx.amount.toStringAsFixed(2)}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            color: Color.fromARGB(255, 74, 58, 71)),
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                  elevation: 5,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: FittedBox(child: Text('${tx.amount}',)),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                          // padding: EdgeInsets.all(10),
-                          // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-
-                          child: Text(
-                            tx.title,
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 112, 164, 232),
-                                fontSize: 18.4,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Container(
-                          // decoration: BoxDecoration(border: Border.all(color: Colors.red)),
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            DateFormat.yMMMd().format(tx.date),
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 120, 157, 186),
-                                fontSize: 9,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ));
+                    title: Text(
+                      tx.title, 
+                      style: TextStyle(fontWeight:FontWeight.normal),
+                      ),
+                    subtitle: Text(DateFormat.yMMMd().format(tx.date)),
+                  ),
+                );
               }).toList(),
             ),
     );

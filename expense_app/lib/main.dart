@@ -31,13 +31,13 @@ class _ExpenseAppState extends State<ExpenseApp> {
     // Transaction("t2", "Handbol", 899.9, DateTime.now()),
   ];
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount, DateTime chosenDate) {
     if (txTitle.isEmpty || txAmount.isNaN || txAmount.isNegative) {
       print("THATS ILLEGAL, CHECK USER_TRANSACTION.DART\n\n\n\n");
       return;
     }
     final newTx = Transaction(
-        DateTime.now().toString(), txTitle, txAmount, DateTime.now());
+        DateTime.now().toString(), txTitle, txAmount, chosenDate);
 
     setState(() {
       transactions.add(newTx);

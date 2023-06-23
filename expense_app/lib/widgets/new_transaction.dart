@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTx;
@@ -12,8 +13,24 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2023),
+            lastDate: DateTime.now())
+        .then((value) => {
+              if (value != null)
+                {
+                  setState(() {
+                    _selectedDate = value;
+                  })
+                }
+            });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +50,33 @@ class _NewTransactionState extends State<NewTransaction> {
             controller: amountController,
             keyboardType: TextInputType.number,
           ),
-          TextButton(
+          Container(
+            //height: 70,
+            //padding: EdgeInsets.only(left: 7),
+            child: Row(children: [
+              Text(_selectedDate == null
+                  ? "No Date Chosen!"
+                  : DateFormat.yMd().format(_selectedDate)),
+              SizedBox(width: 207,),
+              TextButton(
+                  onPressed: _presentDatePicker,
+                  child: Text(
+                    "Chose Date",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )),
+            ]),
+          ),
+          ElevatedButton(
             onPressed: () {
               //special widget, to access properties of
               /// above class
               widget.addNewTx(
-                  titleController.text, double.parse(amountController.text));
+                  titleController.text, double.parse(amountController.text), _selectedDate);
               Navigator.of(context).pop();
             },
             child: Text(
               "Add Transaction",
-              style: TextStyle(color: Theme.of(context).primaryColor),
+              style: TextStyle(color: const Color.fromARGB(255, 63, 52, 52)),
             ),
           ),
         ],

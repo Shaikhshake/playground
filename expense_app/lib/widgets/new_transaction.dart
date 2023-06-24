@@ -54,9 +54,7 @@ class _NewTransactionState extends State<NewTransaction> {
             //height: 70,
             //padding: EdgeInsets.only(left: 7),
             child: Row(children: [
-              Text(_selectedDate == null
-                  ? "No Date Chosen!"
-                  : DateFormat.yMd().format(_selectedDate)),
+              Text(DateFormat.yMd().format(_selectedDate)),
               SizedBox(width: 183.2,),
               TextButton(
                   onPressed: _presentDatePicker,

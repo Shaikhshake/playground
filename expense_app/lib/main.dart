@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:flutter/services.dart';
+
 import '../widgets/new_transaction.dart';
 
 import 'package:flutter/material.dart';
@@ -7,6 +9,10 @@ import './widgets/transaction_list.dart';
 import './widgets/chart.dart';
 
 void main() {
+  //below code forces app to only have portrait mode
+  // WidgetsFlutterBinding.ensureInitialized(); //initializes something
+  // SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
     MaterialApp(
       home: ExpenseApp(),
@@ -65,8 +71,11 @@ class _ExpenseAppState extends State<ExpenseApp> {
     }).toList();
   }
 
+  bool _showChart = false;
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.orientationOf(context) == Orientation.landscape;
     final appBar = AppBar(
       title: Text("Expense Report"),
       actions: [
@@ -80,17 +89,52 @@ class _ExpenseAppState extends State<ExpenseApp> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Show Chart"),
+                  Switch(
+                      value: _showChart,
+                      onChanged: (val) {
+                        setState(() {
+                          _showChart = val;
+                        });
+                      })
+                ],
+              ),
+            if (!isLandscape)
+              Container(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      0.3,
+                  child: Chart(transactions)),
+            if (!isLandscape)
+              Container(
                 height: (MediaQuery.of(context).size.height -
-                    appBar.preferredSize.height - MediaQuery.of(context).padding.top)* 0.25,
-                child: Chart(transactions)),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                    appBar.preferredSize.height -MediaQuery.of(context).padding.top)* 0.75,
-              child: TransactionList(transactions,
-                  _deleteTransactions),
-            ), // for Input and Display parts
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.7,
+                child: TransactionList(transactions, _deleteTransactions),
+              ),
+            if (isLandscape)
+              _showChart
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: Chart(transactions))
+                  : Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.75,
+                      child: TransactionList(transactions, _deleteTransactions),
+                    ), // for Input and Display parts
           ],
         ),
       ),

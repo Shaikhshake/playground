@@ -14,15 +14,18 @@ class TransactionList extends StatelessWidget {
     return Container(
       // height: (MediaQuery.of(context).size.height * 0.6),
       child: transactions.isEmpty
-          ? Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset('assets/images/empty_folder.png'),
-                Text("No Transactions Added Yet!",
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                
-              ],
+          ? LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.asset('assets/images/empty_folder.png'),
+                    Text("No Transactions Added Yet!",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold)),
+                  ],
+                );
+              },
             )
           : ListView(
               children: transactions.map((tx) {
@@ -45,13 +48,20 @@ class TransactionList extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.normal),
                     ),
                     subtitle: Text(DateFormat.yMMMd().format(tx.date)),
-                    trailing: IconButton(
-                      onPressed: () {
-                        deleteTransaction(tx.id);
-                      },
-                      icon: Icon(Icons.delete),
-                      color: Color.fromARGB(255, 0, 0, 0),
-                    ),
+                    trailing: MediaQuery.of(context).size.width > 360
+                        ? ElevatedButton.icon(
+                            onPressed: () {
+                              deleteTransaction(tx.id);
+                            },
+                            icon: Icon(Icons.delete),
+                            label: Text("Delete"),
+                          )
+                        : IconButton(
+                            onPressed: () {
+                              deleteTransaction(tx.id);
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
                   ),
                 );
               }).toList(),

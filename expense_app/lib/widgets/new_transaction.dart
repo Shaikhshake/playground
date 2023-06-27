@@ -34,53 +34,55 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          TextField(
-            decoration: InputDecoration(labelText: "Title"),
-            controller: titleController,
-            // i don't wanna add onSubmit option for user.
-          ),
-          TextField(
-            decoration: InputDecoration(labelText: "Amount: ₹"),
-            controller: amountController,
-            keyboardType: TextInputType.number,
-          ),
-          Container(
-            //height: 70,
-            //padding: EdgeInsets.only(left: 7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              Text(DateFormat.yMd().format(_selectedDate)),
-              //SizedBox(width: 183.2,),
-              TextButton(
-                  onPressed: _presentDatePicker,
-                  child: Text(
-                    "Chose Date",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  )),
-            ]),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              //special widget, to access properties of
-              /// above class
-              widget.addNewTx(
-                  titleController.text, double.parse(amountController.text), _selectedDate);
-              Navigator.of(context).pop();  //?? What is this?
-            },
-            child: Text(
-              "Add Transaction",
-              style: TextStyle(color: const Color.fromARGB(255, 63, 52, 52)),
+    return SingleChildScrollView(
+      child: Card(
+          child: Container(
+        padding: EdgeInsets.only(top:10, left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextField(
+              decoration: InputDecoration(labelText: "Title"),
+              controller: titleController,
+              // i don't wanna add onSubmit option for user.
             ),
-          ),
-        ],
-      ),
-    ));
+            TextField(
+              decoration: InputDecoration(labelText: "Amount: ₹"),
+              controller: amountController,
+              keyboardType: TextInputType.number,
+            ),
+            Container(
+              //height: 70,
+              //padding: EdgeInsets.only(left: 7),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                Text(DateFormat.yMd().format(_selectedDate)),
+                //SizedBox(width: 183.2,),
+                TextButton(
+                    onPressed: _presentDatePicker,
+                    child: Text(
+                      "Chose Date",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    )),
+              ]),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                //special widget, to access properties of
+                /// above class
+                widget.addNewTx(
+                    titleController.text, double.parse(amountController.text), _selectedDate);
+                Navigator.of(context).pop();  //?? What is this?
+              },
+              child: Text(
+                "Add Transaction",
+                style: TextStyle(color: const Color.fromARGB(255, 63, 52, 52)),
+              ),
+            ),
+          ],
+        ),
+      )),
+    );
   }
 }

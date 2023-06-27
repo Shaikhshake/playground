@@ -23,7 +23,6 @@ class ChartBar extends StatelessWidget {
             child: Stack(
               children: [
                 // ordering of stack is reversed, i.e LIFO
-
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 1.0),

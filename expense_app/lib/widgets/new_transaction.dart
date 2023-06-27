@@ -53,9 +53,11 @@ class _NewTransactionState extends State<NewTransaction> {
           Container(
             //height: 70,
             //padding: EdgeInsets.only(left: 7),
-            child: Row(children: [
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
               Text(DateFormat.yMd().format(_selectedDate)),
-              SizedBox(width: 183.2,),
+              //SizedBox(width: 183.2,),
               TextButton(
                   onPressed: _presentDatePicker,
                   child: Text(
@@ -70,7 +72,7 @@ class _NewTransactionState extends State<NewTransaction> {
               /// above class
               widget.addNewTx(
                   titleController.text, double.parse(amountController.text), _selectedDate);
-              Navigator.of(context).pop();
+              Navigator.of(context).pop();  //?? What is this?
             },
             child: Text(
               "Add Transaction",

@@ -67,32 +67,32 @@ class _ExpenseAppState extends State<ExpenseApp> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text("Expense Report"),
+      actions: [
+        IconButton(
+            onPressed: () => _startAddingNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Expense Report"),
-        actions: [
-          IconButton(
-              onPressed: () => _startAddingNewTransaction(context),
-              icon: Icon(Icons.add))
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          // Container(
-          //     //For card
-          //     width: double.infinity,
-          //     child: Container(
-          //       margin: EdgeInsets.only(top: 5),
-          //       child: Card(
-          //         color: Theme.of(context).primaryColor,
-          //         elevation: 10,
-          //         child: Text("Card Placeholder"),
-          //       ),
-          //     )),
-          Chart(transactions),
-          TransactionList(transactions, _deleteTransactions), // for Input and Display parts
-        ],
+      appBar: appBar,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height - MediaQuery.of(context).padding.top)* 0.25,
+                child: Chart(transactions)),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -MediaQuery.of(context).padding.top)* 0.75,
+              child: TransactionList(transactions,
+                  _deleteTransactions),
+            ), // for Input and Display parts
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _startAddingNewTransaction(context),

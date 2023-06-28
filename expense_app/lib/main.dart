@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 
 import '../widgets/new_transaction.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "./models/transaction.dart";
 import './widgets/transaction_list.dart';
@@ -14,7 +16,7 @@ void main() {
   // SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
-    MaterialApp(
+     MaterialApp(
       home: ExpenseApp(),
       title: "Expense Report",
       theme: ThemeData(
@@ -76,17 +78,30 @@ class _ExpenseAppState extends State<ExpenseApp> {
   Widget build(BuildContext context) {
     final isLandscape =
         MediaQuery.orientationOf(context) == Orientation.landscape;
-    final appBar = AppBar(
-      title: Text("Expense Report"),
-      actions: [
-        IconButton(
-            onPressed: () => _startAddingNewTransaction(context),
-            icon: Icon(Icons.add))
-      ],
-    );
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text("Expense Report"),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  child: Icon(Icons.add),
+                  onTap: () => _startAddingNewTransaction(context),
+                )
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text("Expense Report"),
+            actions: [
+              IconButton(
+                  onPressed: () => _startAddingNewTransaction(context),
+                  icon: Icon(Icons.add))
+            ],
+          ) as PreferredSizeWidget;
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -96,7 +111,8 @@ class _ExpenseAppState extends State<ExpenseApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Show Chart"),
-                  Switch(
+                  Switch.adaptive(
+                      activeColor: Colors.amber,//Theme.of(context).primaryColor,
                       value: _showChart,
                       onChanged: (val) {
                         setState(() {
@@ -138,11 +154,23 @@ class _ExpenseAppState extends State<ExpenseApp> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _startAddingNewTransaction(context),
-        child: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: appBar as ObstructingPreferredSizeWidget,
+            child: pageBody,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    onPressed: () => _startAddingNewTransaction(context),
+                    child: Icon(Icons.add),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 }

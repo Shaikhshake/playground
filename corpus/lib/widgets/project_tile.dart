@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ProjectTile extends StatelessWidget {
   final Project;
   ProjectTile(this.Project);
-  int _langCounter = 0;
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -39,6 +39,7 @@ class ProjectTile extends StatelessWidget {
                 subtitle: Text(Project.ownerName,
                     style:
                         TextStyle(fontWeight: FontWeight.w400, fontSize: 15)),
+                // ignore: prefer_const_literals_to_create_immutables
                 trailing: Wrap(spacing: 12, children: [
                   CircleAvatar(
                     backgroundImage: AssetImage('assets/images/flutter.png'),
